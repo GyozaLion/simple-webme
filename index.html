@@ -12,6 +12,20 @@
     <!-- Background grid -->
     <div class="bg-grid"></div>
 
+    <!-- Floating Social Taskbar -->
+    <aside class="social-taskbar">
+        <div class="taskbar-label">LINKED_NODES</div>
+        <a href="#" target="_blank" aria-label="LinkedIn" title="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/gyozalion" target="_blank" aria-label="GitHub" title="GitHub">
+            <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="#" target="_blank" aria-label="Discord" title="Discord">
+            <i class="fa-brands fa-discord"></i>
+        </a>
+    </aside>
+
     <header>
         <nav>
             <div class="logo">
@@ -81,47 +95,56 @@
                 <span>SYS.FILES</span>
                 <h2>ACTIVE PROJECTS</h2>
                 <div class="divider"></div>
+                <p class="section-desc">Select a project node to initialize detailed schematics and operational data.</p>
             </div>
+            
+            <!-- Category Filter (Optional styling, similar to reference) -->
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">ALL_SYSTEMS</button>
+                <button class="filter-btn" data-filter="hardware">HARDWARE</button>
+                <button class="filter-btn" data-filter="firmware">FIRMWARE</button>
+            </div>
+
             <div class="project-grid">
                 <!-- Project 1 -->
-                <div class="project-card">
+                <div class="project-card" data-category="hardware firmware" onclick="openModal('modal-1')">
                     <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80');">
-                        <div class="overlay"></div>
+                        <div class="overlay"><i class="fa-solid fa-expand"></i><br>VIEW DETAILS</div>
                     </div>
                     <div class="project-info">
                         <h3>SharkEngine ROV</h3>
                         <p class="role">Role: Lead Systems Architect</p>
-                        <p class="desc">Multi-thruster Remotely Operated Vehicle submarine prototype for undergraduate thesis. Features a custom C++ PID controller and W5500 Ethernet connectivity to a PC.</p>
+                        <p class="desc">Multi-thruster Remotely Operated Vehicle submarine prototype.</p>
                         <div class="tech-stack">
-                            <span>ESP32</span><span>C++</span><span>Ethernet</span>
+                            <span>ESP32</span><span>C++</span>
                         </div>
                     </div>
                 </div>
                 <!-- Project 2 -->
-                <div class="project-card">
+                <div class="project-card" data-category="hardware" onclick="openModal('modal-2')">
                     <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80');">
-                        <div class="overlay"></div>
+                        <div class="overlay"><i class="fa-solid fa-expand"></i><br>VIEW DETAILS</div>
                     </div>
                     <div class="project-info">
                         <h3>Li-Ion Power Matrix</h3>
                         <p class="role">Role: Hardware Engineer</p>
-                        <p class="desc">Assembled custom 18650 lithium-ion battery packs with external voltage dividers, ESC flashing, and physical slide switch components.</p>
+                        <p class="desc">Custom 18650 lithium-ion battery packs and distribution.</p>
                         <div class="tech-stack">
-                            <span>Hardware</span><span>Electronics</span><span>Power</span>
+                            <span>Hardware</span><span>Power</span>
                         </div>
                     </div>
                 </div>
                 <!-- Project 3 -->
-                <div class="project-card">
+                <div class="project-card" data-category="firmware" onclick="openModal('modal-3')">
                     <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1614332287897-cdc485fa562d?auto=format&fit=crop&q=80');">
-                        <div class="overlay"></div>
+                        <div class="overlay"><i class="fa-solid fa-expand"></i><br>VIEW DETAILS</div>
                     </div>
                     <div class="project-info">
                         <h3>Digital Portfolio</h3>
                         <p class="role">Role: Frontend Developer</p>
-                        <p class="desc">Interactive personal portfolio webpage programmed as a single-file HTML layout with custom asset routing. Hosted natively on GitHub Pages.</p>
+                        <p class="desc">Interactive personal portfolio webpage on GitHub Pages.</p>
                         <div class="tech-stack">
-                            <span>HTML/CSS</span><span>GitHub Pages</span>
+                            <span>HTML/CSS</span><span>GitHub</span>
                         </div>
                     </div>
                 </div>
@@ -154,6 +177,93 @@
     <footer>
         <p>&copy; 2026 Antonius Andrian. Designed with mechanical precision. Built for GitHub Pages.</p>
     </footer>
+
+    <!-- MODAL STRUCTURES -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeAllModals()"></div>
+
+    <!-- Modal 1: SharkEngine -->
+    <div class="modal" id="modal-1">
+        <button class="close-btn" onclick="closeModal('modal-1')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content">
+            <span class="modal-tag">HARDWARE & FIRMWARE</span>
+            <h2>SharkEngine ROV Prototype</h2>
+            <div class="modal-role"><i class="fa-solid fa-user-gear"></i> Role: Lead Systems Architect</div>
+            
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="SharkEngine" class="modal-img">
+            
+            <div class="modal-section">
+                <h3><i class="fa-solid fa-list-check"></i> Primary Parameters</h3>
+                <ul>
+                    <li>Designed structural layout and evaluated pressure boundaries for physical immersion testing.</li>
+                    <li>Developed custom C++ PID controller class for multi-thruster stabilization.</li>
+                    <li>Integrated W5500 Ethernet connectivity to establish a tethered serial connection to a PC.</li>
+                    <li>Authored formal "Batasan Masalah" limiting control logic to wired communication.</li>
+                </ul>
+            </div>
+            
+            <div class="modal-section">
+                <h3><i class="fa-solid fa-microchip"></i> System Architecture</h3>
+                <p>The system utilizes a dual ESP32 architecture framework, managing multi-threaded FreeRTOS instances for real-time sensor processing and motor actuation without relying on an intermediate Arduino Nano.</p>
+            </div>
+            
+            <div class="modal-links">
+                <a href="#" class="btn-primary" target="_blank"><i class="fa-brands fa-github"></i> REPOSITORY</a>
+                <a href="#" class="btn-secondary" target="_blank"><i class="fa-solid fa-file-pdf"></i> VIEW THESIS DOC</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Battery Matrix -->
+    <div class="modal" id="modal-2">
+        <button class="close-btn" onclick="closeModal('modal-2')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content">
+            <span class="modal-tag">HARDWARE PROTOTYPING</span>
+            <h2>Li-Ion Power Matrix</h2>
+            <div class="modal-role"><i class="fa-solid fa-user-gear"></i> Role: Hardware Engineer</div>
+            
+            <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Battery" class="modal-img">
+            
+            <div class="modal-section">
+                <h3><i class="fa-solid fa-list-check"></i> Primary Parameters</h3>
+                <ul>
+                    <li>Assembled custom 18650 lithium-ion battery packs for high-drain applications.</li>
+                    <li>Configured external voltage dividers for accurate real-time telemetry sensing.</li>
+                    <li>Flashed electronic speed controllers (ESCs) for synchronized motor output.</li>
+                    <li>Integrated physical slide switch components for hardware-level safety cutoffs.</li>
+                </ul>
+            </div>
+            
+            <div class="modal-links">
+                <a href="#" class="btn-secondary" target="_blank"><i class="fa-solid fa-image"></i> VIEW SCHEMATIC</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Portfolio -->
+    <div class="modal" id="modal-3">
+        <button class="close-btn" onclick="closeModal('modal-3')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content">
+            <span class="modal-tag">FRONTEND DEVELOPMENT</span>
+            <h2>Digital Portfolio System</h2>
+            <div class="modal-role"><i class="fa-solid fa-user-gear"></i> Role: Developer</div>
+            
+            <img src="https://images.unsplash.com/photo-1614332287897-cdc485fa562d?auto=format&fit=crop&q=80" alt="Code" class="modal-img">
+            
+            <div class="modal-section">
+                <h3><i class="fa-solid fa-list-check"></i> Primary Parameters</h3>
+                <ul>
+                    <li>Programmed a single-file HTML layout utilizing Vanilla JS and CSS variables.</li>
+                    <li>Engineered custom DOM interactions including intersection observers and modal overlays.</li>
+                    <li>Deployed via custom asset routing natively hosted on GitHub Pages.</li>
+                </ul>
+            </div>
+            
+            <div class="modal-links">
+                <a href="https://gyozalion.github.io/portofolio-antoni/" class="btn-primary" target="_blank"><i class="fa-solid fa-globe"></i> LIVE DEPLOYMENT</a>
+                <a href="https://github.com/gyozalion" class="btn-secondary" target="_blank"><i class="fa-brands fa-github"></i> REPOSITORY</a>
+            </div>
+        </div>
+    </div>
 
     <script src="js/script.js"></script>
 </body>
