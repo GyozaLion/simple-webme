@@ -1,95 +1,92 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. PROJECT FILTERING ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            projectCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (filterValue === 'all' || filterValue === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
-        }
-    });
-});
-
-// Intersection Observer for scroll animations
-const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.15
-};
-
-const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-});
-
-// Project Filtering logic
-const filterBtns = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
-
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all
-        filterBtns.forEach(b => b.classList.remove('active'));
-        // Add active to clicked
-        btn.classList.add('active');
-        
-        const filterValue = btn.getAttribute('data-filter');
-        
-        projectCards.forEach(card => {
-            if (filterValue === 'all' || card.getAttribute('data-category').includes(filterValue)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
         });
     });
-});
 
-// Modal Logic
-const overlay = document.getElementById('modal-overlay');
+    // --- 2. MODAL LOGIC ---
+    const modalOverlay = document.getElementById('project-modal');
+    const modalBody = document.querySelector('.modal-body');
+    const closeModalBtn = document.querySelector('.close-modal');
 
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if(modal) {
-        overlay.classList.add('active');
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling background
-    }
-}
+    // Open Modal
+    projectCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Extract the hidden details inside the clicked card
+            const title = card.querySelector('.project-title').innerText;
+            const category = card.querySelector('.project-category').innerText;
+            const hiddenDetails = card.querySelector('.hidden-details').innerHTML;
 
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if(modal) {
-        modal.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-}
+            // Inject into modal body dynamically
+            modalBody.innerHTML = `
+                <span class="mono-label" style="color: var(--accent-orange);">${category}</span>
+                <h2 style="margin-bottom: 1rem; font-size: 1.8rem;">${title}</h2>
+                ${hiddenDetails}
+            `;
 
-function closeAllModals() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        modal.classList.remove('active');
+            // Show modal
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
     });
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
 
-// Close modal on Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeAllModals();
-    }
+    // Close Modal
+    const closeModal = () => {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    
+    // Close when clicking outside the modal content
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeModal();
+        }
+    });
+
+    // --- 3. COPY EMAIL TO CLIPBOARD ---
+    const copyBtn = document.getElementById('copy-email-btn');
+    const emailAddress = document.getElementById('email-address').innerText;
+    const toast = document.getElementById('copy-toast');
+
+    copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(emailAddress).then(() => {
+            // Show toast notification
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    });
+
+    // --- 4. MOBILE MENU TOGGLE (Simple alert for template) ---
+    const mobileBtn = document.querySelector('.mobile-menu-btn');
+    mobileBtn.addEventListener('click', () => {
+        // You can expand this to toggle a CSS class that shows the .nav-links vertically
+        alert("Mobile menu clicked! You can bind this to toggle a vertical navigation class.");
+    });
 });
-
-// Simple console easter egg for engineers
-console.log("%cSYSTEM INITIALIZED", "color: #FF6600; font-size: 20px; font-weight: bold; font-family: monospace;");
-console.log("%cWelcome to the backend terminal. No unauthorized access.", "color: #00F0FF; font-family: monospace;");
